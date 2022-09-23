@@ -27,18 +27,10 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "}\n\0";
 
 float vertices[] = {
-	0.5f, 0.5f, 0.0f,	// Top right
-	0.5f, -0.5f, 0.0f,	// Bottom right
-	-0.5f, -0.5f, 0.0f,	// Bottom left
-	-0.5f, 0.5f, 0.0f	// Top left
+	-0.5f, -0.5f, 0.0f,
+	0.5f, -0.5f, 0.0f,
+	0.0f, 0.5f, 0.0f
 };
-
-// Note that we start from 0!
-unsigned int indices[] = {
-	0, 1, 3,	// First triangle
-	1, 2, 3		// Second triangle
-};
-
 
 int main()
 {
@@ -105,28 +97,18 @@ int main()
 
 
 	// VBO buffer initialization.
-	unsigned int VBO, VAO, EBO;
+	unsigned int VBO, VAO;
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
-	glGenBuffers(1, &EBO);
-
-	// 1.Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+	// Bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
 	glBindVertexArray(VAO);
 
-	// 2.Copy vertices array in a vertex buffer for OpenGL to use.
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-	// 3.Copy index array in a element buffer for OpenGL to use.
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-
-	// 4. Set the vertex attributes pointers
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
 	glEnableVertexAttribArray(0);
 
-	// Wireframe view.
-	// glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 
 	// Program Loop.
@@ -139,11 +121,10 @@ int main()
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		// Draw rectangle with indexing
+		// Draw first triangle
 		glUseProgram(shaderProgram);
 		glBindVertexArray(VAO);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		glBindVertexArray(0);
+		glDrawArrays(GL_TRIANGLES, 0, 3);
 
 		// Check and call events and swap the buffers.
 		glfwSwapBuffers(window);
