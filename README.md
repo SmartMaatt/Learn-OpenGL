@@ -6,4 +6,4 @@ The program examples are taken from the book Learn OpenGL - Graphics Programing 
 * Language: C++
 * Graphics API: OpenGL 3.3 (Core-profile)
 * Graphics Library Framework: GLFW
-* Driver/Loader-Generator: GLAD
+* Driver controller library: GLAD
